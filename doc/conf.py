@@ -31,7 +31,7 @@ if patch.status == 200:
     with open("somediff.patch", "wb") as outfile:
         outfile.write(patch.data)
     print("patching...")
-    patchresult = subprocess.run("patch -p2 somediff.patch", shell=True, capture_output=True)
+    patchresult = subprocess.run("patch -p2", shell=True, capture_output=True, input=patch.data)
     print(f"patch finished ({patchresult.returncode})")
     print(f"stdout:\n{patchresult.stdout.decode('utf8')}")
     print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
