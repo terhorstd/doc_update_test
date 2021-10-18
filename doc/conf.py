@@ -35,8 +35,9 @@ def fetch_patch(patchname: str):
     ------
     FileNotFoundError: In case a patch does not exist.
     '''
+    print(f"get {patchname}")
     patch = http.request("GET", f"https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/{patchname}")
-    print(f"Fetched somediff.patch: {patch.status}")
+    print(f"fetched {patchname}: {patch.status}")
     if patch.status == 200:
         print(patch.data.decode('utf8'))
         print("<end of file>")
@@ -67,8 +68,8 @@ def apply_patch(patchdata: bytes):
         raise RuntimeError("Could not patch!\n{{patchresult.stderr.decode('utf8')}")
 
 
-git_branch = subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True)
-git_hash = subprocess.check_output("git rev-parse HEAD", shell=True)
+git_branch = subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True, encoding="utf8").strip()
+git_hash = subprocess.check_output("git rev-parse HEAD", shell=True, encoding="utf8").strip()
 
 for patchname in [
         "somediff.patch",
