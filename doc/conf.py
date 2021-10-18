@@ -22,7 +22,7 @@ print(f"Fetched somediff.patch: {patch.status}")
 if patch.status == 200:
     print(patch.data)
     print("<eof>")
-    with open("somediff.patch", "w") as outfile:
+    with open("somediff.patch", "wb") as outfile:
         outfile.write(patch.data)
     check_call("patch -p1 somediff.patch")
 else:
