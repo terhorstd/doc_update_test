@@ -22,24 +22,65 @@ import shlex
 # Note: always fetch patch from latest repository (main)
 #
 http = urllib3.PoolManager()
-patch = http.request("GET", "https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/somediff.patch")
-print(f"Fetched somediff.patch: {patch.status}")
-if patch.status == 200:
-    print(patch.data.decode('utf8'))
-    print("<end of file>")
 
-    # apply patch to current documentation
-    with open("somediff.patch", "wb") as outfile:
-        outfile.write(patch.data)
+def fetch_patch(patchname: str)
+    '''
+    Fetch the given patch from upstream main branch.
+
+    Returns
+    -------
+    bytes: content of the loaded patch file
+
+    Raises
+    ------
+    FileNotFoundError: In case a patch does not exist.
+    '''
+    patch = http.request("GET", f"https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/{patchname}")
+    print(f"Fetched somediff.patch: {patch.status}")
+    if patch.status == 200:
+        print(patch.data.decode('utf8'))
+        print("<end of file>")
+        return patch.data
+    raise FileNotFoundError(patchname)
+
+def apply_patch(patchdata: bytes):
+    '''
+    Apply a loaded patch to the current file tree.
+
+    Parameters
+    ----------
+    patchdata: bytes
+        Patch to be applied to the current file tree.
+
+    Returns
+    -------
+    None
+    '''
     print("patching...")
-    patchresult = subprocess.run("patch -p2", shell=True, capture_output=True, input=patch.data)
+    patchresult = subprocess.run("patch -p2", shell=True, capture_output=True, input=patchdata)
     print(f"patch finished ({patchresult.returncode})")
-    print(f"stdout:\n{patchresult.stdout.decode('utf8')}")
-    print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
-    print("<end of patch>")
-else:
-    print("\nFAILED to download a patch! Assuming no patch for this version.\n")
-    print(f"Received:\n{patch.data}\n<eot>")
+    if patchresult.stdout:
+        print(f"stdout:\n{patchresult.stdout.decode('utf8')}")
+    if patchresult.stderr:
+        print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
+    if patchresult.returncode != 0:
+        raise RuntimeError("Could not patch!\n{{patchresult.stderr.decode('utf8')}")
+
+
+git_branch = subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True)
+git_hash = subprocess.check_output("git rev-parse HEAD", shell=True)
+
+for patchname in [
+        "somediff.patch",
+        f"{git_branch}.patch",
+        f"{git_hash}.patch",
+        ]:
+    try:
+        apply_patch(fetch_patch(patchname))
+    except RuntimeError as e:
+        print(f"Failed to patch files: {e}")
+    except FileNotFoundError as e:
+        print(f"Failed to download patch: {e}")
 
 # create job environment docs
 with open("env.rst", "w", encoding="utf8") as outfile:
