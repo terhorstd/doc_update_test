@@ -65,7 +65,7 @@ def apply_patch(patchdata: bytes):
     if patchresult.stderr:
         print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
     if patchresult.returncode != 0:
-        raise RuntimeError(f"Could not patch!\n{{patchresult.stderr.decode('utf8')}")
+        raise RuntimeError(f"Could not patch!\n{patchresult.stderr.decode('utf8')}")
 
 
 git_branch = subprocess.check_output("git rev-parse --abbrev-ref HEAD", shell=True, encoding="utf8").strip()
