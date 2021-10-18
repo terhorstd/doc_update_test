@@ -35,7 +35,7 @@ if patch.status == 200:
     print(f"patch finished ({patchresult.returncode})")
     print(f"stdout:\n{patchresult.stdout.decode('utf8')}")
     print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
-    print("<end of patch>"
+    print("<end of patch>")
 else:
     print("\nFAILED to download a patch! Assuming no patch for this version.\n")
     print(f"Received:\n{patch.data}\n<eot>")
