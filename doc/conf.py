@@ -16,19 +16,19 @@ import os
 
 import urllib3
 http = urllib3.PoolManager()
-r = http.request('GET', 'https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/somediff.patch')
+r = http.request("GET", "https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/somediff.patch")
 print(f"Fetched somediff.patch: {r.status}")
 print(r.data)
 print("<eof>")
 
-with open("env.rst", 'w', encoding="utf8") as outfile:
-    outfile.write('RTD environment\n")
-    outfile.write('---------------\n")
+with open("env.rst", "w", encoding="utf8") as outfile:
+    outfile.write("RTD environment\n")
+    outfile.write("---------------\n")
 
-    outfile.write('```\n")
+    outfile.write("```\n")
     for key, value in os.environ.items():
         outfile.write(f"{key} = {value}\n")
-    outfile.write('```\n")
+    outfile.write("```\n")
 
 # -- Project information -----------------------------------------------------
 
