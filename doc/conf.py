@@ -23,7 +23,7 @@ import shlex
 #
 http = urllib3.PoolManager()
 
-def fetch_patch(patchname: str)
+def fetch_patch(patchname: str):
     '''
     Fetch the given patch from upstream main branch.
 
