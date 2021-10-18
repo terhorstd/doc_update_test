@@ -13,6 +13,7 @@
 import os
 import urllib3
 import subprocess
+import shlex
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -44,9 +45,9 @@ else:
 with open("env.rst", "w", encoding="utf8") as outfile:
     outfile.write("RTD environment\n")
     outfile.write("---------------\n\n")
-    outfile.write(".. :code-block:\n\n")
+    outfile.write(".. code-block:: bash\n   :linenos:\n\n")
     for key, value in os.environ.items():
-        outfile.write(f"    {key} = {value}\n")
+        outfile.write(f"   {key}={shlex.quote(value)}\n")
     outfile.write("\n")
 
 # show modified files in output
