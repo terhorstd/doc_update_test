@@ -1,11 +1,18 @@
+diff --git a/doc/index.rst b/doc/index.rst
+index 4d54bf4..a1fc484 100644
 --- a/doc/index.rst
 +++ b/doc/index.rst
-@@ -10,7 +10,7 @@ Welcome to DocUpdate Test's documentation!
-    :maxdepth: 2
-    :caption: Contents:
+@@ -13,9 +13,13 @@ Welcome to DocUpdate Test's documentation!
+    env
  
--
-+This is an awesome test!
  
++NEW STUFF IS HERE
++
  Indices and tables
  ==================
+ 
+ * :ref:`genindex`
+ * :ref:`modindex`
+ * :ref:`search`
++
++This is an exension of the main index file.

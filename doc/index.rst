@@ -10,6 +10,7 @@ Welcome to DocUpdate Test's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   env
 
 
 Indices and tables

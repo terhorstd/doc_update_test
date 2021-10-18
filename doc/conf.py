@@ -12,23 +12,35 @@
 #
 import os
 import urllib3
-from subprocess import check_call
+import subprocess
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+#
+# fetch patch for documentation
+# Note: always fetch patch from latest repository (main)
+#
 http = urllib3.PoolManager()
 patch = http.request("GET", "https://github.com/terhorstd/doc_update_test/raw/main/doc/patches/somediff.patch")
 print(f"Fetched somediff.patch: {patch.status}")
 if patch.status == 200:
-    print(patch.data)
-    print("<eof>")
+    print(patch.data.decode('utf8'))
+    print("<end of file>")
+
+    # apply patch to current documentation
     with open("somediff.patch", "wb") as outfile:
         outfile.write(patch.data)
-    check_call("patch -p1 somediff.patch", shell=True)
+    print("patching...")
+    patchresult = subprocess.run("patch -p2 somediff.patch", shell=True, capture_output=True)
+    print(f"patch finished ({patchresult.returncode})")
+    print(f"stdout:\n{patchresult.stdout.decode('utf8')}")
+    print(f"stderr:\n{patchresult.stderr.decode('utf8')}")
+    print("<end of patch>"
 else:
     print("\nFAILED to download a patch! Assuming no patch for this version.\n")
     print(f"Received:\n{patch.data}\n<eot>")
 
+# create job environment docs
 with open("env.rst", "w", encoding="utf8") as outfile:
     outfile.write("RTD environment\n")
     outfile.write("---------------\n\n")
@@ -36,6 +48,11 @@ with open("env.rst", "w", encoding="utf8") as outfile:
     for key, value in os.environ.items():
         outfile.write(f"    {key} = {value}\n")
     outfile.write("\n")
+
+# show modified files in output
+for name in ['env.rst', 'index.rst']:
+    with open(name, 'r', encoding="utf8") as infile:
+        print(f"--- {name} ---\n{infile.read()}--- eof {name} ---")
 
 # -- Project information -----------------------------------------------------
 
