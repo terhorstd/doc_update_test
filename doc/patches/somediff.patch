@@ -1,0 +1,11 @@
+--- a/doc/index.rst
++++ b/doc/index.rst
+@@ -10,7 +10,7 @@ Welcome to DocUpdate Test's documentation!
+    :maxdepth: 2
+    :caption: Contents:
+ 
+-
++This is an awesome test!
+ 
+ Indices and tables
+ ==================
