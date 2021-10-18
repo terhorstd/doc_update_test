@@ -24,7 +24,7 @@ if patch.status == 200:
     print("<eof>")
     with open("somediff.patch", "wb") as outfile:
         outfile.write(patch.data)
-    check_call("patch -p1 somediff.patch")
+    check_call("patch -p1 somediff.patch", shell=True)
 else:
     print("\nFAILED to download a patch! Assuming no patch for this version.\n")
     print(f"Received:\n{patch.data}\n<eot>")
