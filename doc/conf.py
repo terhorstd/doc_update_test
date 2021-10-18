@@ -14,6 +14,10 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
+import urllib3 import request
+http = urllib3.PoolManager()
+r = http.request('GET', 'http://httpbin.org/robots.txt')
+
 
 # -- Project information -----------------------------------------------------
 
